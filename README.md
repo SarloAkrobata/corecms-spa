@@ -17,7 +17,10 @@ npm run serve
 ```
 npm run build
 ```
-
+### Compiles and minifies for staging
+```
+ npm run build -- --mode staging
+```
 ### Run your tests
 ```
 npm run test
