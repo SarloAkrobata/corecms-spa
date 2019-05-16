@@ -62,11 +62,7 @@ export default {
           "X-Requested-With": "XMLHttpRequest"
         }
       })
-        .then(function() {
-          console.log('idemoooooooooooooooo')
-          this.$router.push('/dashboard');
-          return true;
-        })
+        .then(() => this.$router.push("/dashboard"))
         .catch(function() {
           return false;
         });
