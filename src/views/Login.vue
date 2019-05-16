@@ -8,7 +8,7 @@
               <v-card-text>
                 <div class="layout column align-center">
                   <img src="/static/m.png" alt="Vue Material Admin" width="120" height="120">
-                  <h1 class="flex my-4 primary--text">Material Admin Template</h1>
+                  <h1 class="flex my-4 primary--text">CoreCMS Login</h1>
                 </div>                
                 <v-form>
                   <v-text-field append-icon="person" name="login" label="Login" type="text" v-model="model.username"></v-text-field>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data: () => ({
     loading: false,
@@ -49,9 +50,26 @@ export default {
   methods: {
     login () {
       this.loading = true;
-      setTimeout(() => {
-        this.$router.push('/dashboard');
-      }, 1000);
+      return axios({
+        method: "post",
+        data: {
+          email: this.model.username,
+          password: this.model.password
+        },
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_LOGIN,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+        .then(function() {
+          console.log('idemoooooooooooooooo')
+          this.$router.push('/dashboard');
+          return true;
+        })
+        .catch(function() {
+          return false;
+        });
     }
   }
 
