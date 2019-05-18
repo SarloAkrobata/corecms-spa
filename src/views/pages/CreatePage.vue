@@ -42,6 +42,7 @@
           <v-subheader class="pa-0">Published: {{s1}} </v-subheader>
           <v-switch :label="s1 ? 'On': 'Off'" v-model="s1"></v-switch>
         </v-flex>
+        <v-btn color="primary">Save</v-btn>
       </v-layout>
     </v-container>
   </div>
