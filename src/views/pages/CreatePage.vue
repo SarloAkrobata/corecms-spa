@@ -1,80 +1,132 @@
 <template>
-  <div id="pageEditor">
+  <div id="page-text-fields">
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
         <v-flex sm12>
-          <v-text-field
-            name="input-1"
-            label="Title"
-            color="primary"
-            id="title"
-          ></v-text-field>
-        </v-flex>
+          <v-widget title="Basic Usage">
+            <div slot="widget-content">
+              <v-container>
+                <v-layout row>
+                  <v-flex xs4>
+                    <v-subheader>Page title</v-subheader>
+                  </v-flex>
+                  <v-flex xs8>
+                    <v-text-field
+                      name="title"
+                      label="Add title here"
+                      v-model="title"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs4>
+                    <v-subheader>Page description </v-subheader>
+                  </v-flex>
+                  <v-flex xs8>
+                    <v-text-field
+                      name="description"
+                      label="Add description"
+                      v-model="description"
+                      value="here"
+                      color="teal"
+                      multi-line
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-layout row>
+                  <v-flex xs4>
+                    <v-subheader>Page template</v-subheader>
+                  </v-flex>
+                  <v-flex xs8>
+                    <v-text-field
+                      label="Add template name"
+                      v-model="template"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-flex>
+                </v-layout>
+                <v-flex xl4>
+                  <v-widget title="Add content here">
+                    <div slot="widget-content">
+                      <v-switch label="Published" v-model="published" color="success" class="desno"></v-switch>
+                      <v-dialog v-model="fullscreen.dialog" fullscreen transition="dialog-bottom-transition" :overlay="false">
+                        <v-btn color="primary" dark slot="activator">Enter content</v-btn>
+                        <v-card>
+                          <v-toolbar dark color="primary">
+                            <v-btn icon @click.native="fullscreen.dialog = false" dark>
+                              <v-icon>close</v-icon>
+                            </v-btn>
+                            <v-toolbar-title>Content section</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-toolbar-items>
+                              <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+                            </v-toolbar-items>
+                          </v-toolbar>
+                          <v-flex sm12>
+                            <quill-editor
+                              class="quill"
+                              :content="content"
+                              :options="editorOption"
+                            >
+                            </quill-editor>
+                          </v-flex>
 
-        <v-flex sm12>
-          <v-text-field
-            name="input-1"
-            label="Description"
-            color="primary"
-            id="description"
-          ></v-text-field>
+                        </v-card>
+                      </v-dialog>
+                    </div>
+                  </v-widget>
+                </v-flex>
+              </v-container>
+            </div>
+          </v-widget>
         </v-flex>
-
-        <v-flex sm12>
-          <quill-editor
-            class="quill"
-            :content="content"
-            :options="editorOption"
-          >
-          </quill-editor>
-        </v-flex>
-
-        <v-flex sm12>
-          <v-text-field
-            name="input-1"
-            label="Template"
-            color="primary"
-            id="template"
-          ></v-text-field>
-        </v-flex>
-
-        <v-flex sm12>
-          <v-subheader class="pa-0">Published: {{s1}} </v-subheader>
-          <v-switch :label="s1 ? 'On': 'Off'" v-model="s1"></v-switch>
-        </v-flex>
-        <v-btn color="primary">Save</v-btn>
       </v-layout>
     </v-container>
   </div>
 </template>
 
 <script>
-import 'quill/dist/quill.core.css';
-import 'quill/dist/quill.snow.css';
-import 'quill/dist/quill.bubble.css';
-import { quillEditor } from 'vue-quill-editor';
+import VWidget from "@/components/VWidget";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+import "quill/dist/quill.bubble.css";
+import { quillEditor } from "vue-quill-editor";
 export default {
   components: {
+    VWidget,
     quillEditor
   },
-  data () {
+  data() {
     return {
-      s1: false,
-      content: '',
+      content: "",
       editorOption: {
-
+        placeholder: "Enter your content here"
+      },
+      title: "",
+      description: "",
+      template: "",
+      published: false,
+      fullscreen: {
+        dialog: false,
+        notifications: false,
+        sound: true,
+        widgets: false
+      },
+      rules: {
+        required: (value) => !!value || 'Required.',
       }
     };
   },
-  computed: {
-  },  
-
-  methods: {
-  }
+  computed: {},
+  methods: {}
 };
 </script>
-<style lang="stylus" scoped>
-  .quill
-    height : 320px
-    margin-bottom : 20px
+<style scoped lang="css">
+.desno {
+  float: right;
+}
+.quill {
+  height : 520px
+}
 </style>
