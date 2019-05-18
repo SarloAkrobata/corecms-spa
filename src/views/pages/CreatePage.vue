@@ -3,16 +3,34 @@
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
         <v-flex sm12>
-          <h3 class="pa-0">Title</h3>
+          <h3 class="pa-0"></h3>
         </v-flex>
         <v-flex sm12>
-          <quill-editor 
-            class="quill"
-            :content="content"
-            :options="editorOption"
-          >
-          </quill-editor>      
-        </v-flex>
+            <v-text-field
+                    name="input-1"
+                    label="Title"
+                    color="primary"
+                    id="title"
+            ></v-text-field>
+            <v-text-field
+                    name="input-1"
+                    label="Description"
+                    color="primary"
+                    id="description"
+            ></v-text-field>
+            <quill-editor
+              class="quill"
+              :content="content"
+              :options="editorOption"
+            >
+            </quill-editor>
+          <v-text-field
+                  name="input-1"
+                  label="Template"
+                  color="primary"
+                  id="template"
+          ></v-text-field>
+          </v-flex>
       </v-layout>
     </v-container>
   </div>
@@ -29,7 +47,7 @@ export default {
   },
   data () {
     return {
-      content: 'Compose Epic Story...',
+      content: '',
       editorOption: {
 
       }
