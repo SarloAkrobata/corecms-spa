@@ -39,6 +39,7 @@ function isValid() {
   console.log(process.env);
   return axios({
     method: "get",
+    withCredentials: true,
     url: process.env.VUE_APP_API_URL + process.env.VUE_APP_VALIDATE,
     headers: {
       "Content-Type": "application/json",

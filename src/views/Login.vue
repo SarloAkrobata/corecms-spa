@@ -52,6 +52,7 @@ export default {
       this.loading = true;
       return axios({
         method: "post",
+        withCredentials: true,
         data: {
           email: this.model.username,
           password: this.model.password
