@@ -60,18 +60,18 @@
                             <v-toolbar-title>Content section</v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-toolbar-items>
-                              <v-btn dark flat @click.native="dialog = false">Save</v-btn>
+                              <v-btn dark flat @click.native ="dialog = false" @click="createPageRequest">Save</v-btn>
                             </v-toolbar-items>
                           </v-toolbar>
                           <v-flex sm12>
                             <quill-editor
+                              v-model="content"
                               class="quill"
                               :content="content"
                               :options="editorOption"
                             >
                             </quill-editor>
                           </v-flex>
-
                         </v-card>
                       </v-dialog>
                     </div>
@@ -92,6 +92,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
+import axios from "axios"
 export default {
   components: {
     VWidget,
@@ -119,7 +120,34 @@ export default {
     };
   },
   computed: {},
-  methods: {}
+  methods: {
+    createPageRequest () {
+      this.loading = true;
+      return axios({
+        method: "post",
+        withCredentials: true,
+        data: {
+          title: this.title,
+          description: this.description,
+          template: this.template,
+          content: this.content,
+          published: this.published
+        },
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+        .then((response) => {
+          console.log(response);
+
+        })
+        .catch(function() {
+          return false;
+        });
+    }
+  }
 };
 </script>
 <style scoped lang="css">

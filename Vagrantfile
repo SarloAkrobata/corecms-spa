@@ -56,10 +56,4 @@ Vagrant.configure("2") do |config|
 	npm install
     SHELL
 
-    # Run always
-    config.vm.provision "shell", run: "always", name: "run-dev-server", inline: <<-SHELL
-        cd /vagrant
-        sudo npm run serve
-    SHELL
-
 end
