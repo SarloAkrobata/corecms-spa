@@ -14,7 +14,7 @@ const Menu =  [
     icon: 'tune',
     items: [
       { name: 'createPage', title: 'Create page', component: 'pages/create' },
-      { name: 'avatars', title: 'All pages', component: 'components/avatars' },
+      { name: 'allPages', title: 'All pages', component: 'pages/all' },
     ]
   },
   {
