@@ -2,9 +2,6 @@
   <div id="pageTable">
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
-        <v-flex sm12>
-          <h3>Complex Table</h3>
-        </v-flex>        
         <v-flex lg12>
           <v-card>
             <v-toolbar card color="white">
