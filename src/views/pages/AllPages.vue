@@ -26,29 +26,24 @@
               <v-data-table
                 :headers="complex.headers"
                 :search="search"
-                :items="complex.items"
+                :items="complex.items[0]"
                 :rows-per-page-items="[10,25,50,{text:'All','value':-1}]"
                 class="elevation-1"
                 item-key="name"
                 select-all
                 v-model="complex.selected"
-                >
+              >
                 <template slot="items" slot-scope="props">
                 <td>
-                  <v-checkbox
+                    <v-checkbox
                     primary
                     hide-details
                     v-model="props.selected"
-                  ></v-checkbox>
-                </td>              
-                  <td>
-                    <v-avatar size="32">
-                      <img :src="props.item.avatar" alt="">
-                    </v-avatar> 
-                  </td>
-                  <td>{{ props.item.name }}</td>
-                  <td>{{ props.item.email }}</td>
-                  <td>{{ props.item.phone }}</td>
+                  >  </v-checkbox></td>
+                  <td>{{ props.item.page_id }}</td>
+                  <td>{{ props.item.title }}</td>
+                  <td>{{ props.item.template }}</td>
+                  <td>{{ props.item.published }}</td>
                   <td>
                     <v-btn depressed outline icon fab dark color="primary" small>
                       <v-icon>edit</v-icon>
@@ -68,39 +63,61 @@
 </template>
 
 <script>
-import { Items as Users } from '@/api/user';
+import axios from "axios";
 export default {
-  data () {
+  data() {
     return {
-      search: '',
+      search: "",
       complex: {
         selected: [],
         headers: [
           {
-            text: 'ID',
-            value: 'id'
+            text: "ID",
+            value: "page_id"
           },
           {
-            text: 'Title',
-            value: 'title'
+            text: "Title",
+            value: "title"
           },
           {
-            text: 'Description',
-            value: 'description'
+            text: "Template",
+            value: "template"
           },
           {
-            text: 'Template',
-            value: 'template'
+            text: "Published",
+            value: "published"
           },
           {
-            text: 'Published',
-            value: ''
-          },
+            text: "Edit",
+            value: "edit"
+          }
         ],
-        items: Users
+        items: []
       }
-
     };
+  },
+  mounted() {
+    this.getPages();
+  },
+  methods: {
+    getPages() {
+      this.loading = true;
+      return axios({
+        method: "get",
+        withCredentials: true,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest"
+        }
+      })
+        .then((response) => {
+          this.complex.items.push(response.data);
+        })
+        .catch(function() {
+          return false;
+        });
+    }
   }
 };
 </script>
