@@ -5,12 +5,14 @@
 
 ## Project setup
 ```
-npm install
+vagrant up
 ```
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+vagrant ssh
+cd /vagrant
+sudo npm run serve //sudo here, because its need privilegies for serving on port 80
 ```
 
 ### Compiles and minifies for production
