@@ -71,6 +71,14 @@ export default [
     )
   },
   {
+    path: "/pages/all",
+    meta: { breadcrumb: true, public: false },
+    name: "pages/all",
+    component: () => import(
+        `@/views/pages/AllPages.vue`
+        )
+  },
+  {
     path: "/pages/create",
     meta: { breadcrumb: true, public: false },
     name: "pages/create",
