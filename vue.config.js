@@ -4,6 +4,9 @@ module.exports = {
     assetsDir: "",
     devServer: {
         disableHostCheck: true,
-        port: 80
+        port: 80,
+        watchOptions: {
+            poll: true
+        }
     }
 }
