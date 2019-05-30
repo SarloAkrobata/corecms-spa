@@ -9,8 +9,8 @@
 Vagrant.configure("2") do |config|
 
     # Base configuration
-    config.vm.box = "bento/ubuntu-18.04"
-    config.vm.box_version = "201812.27.0"
+    config.vm.box = "ubuntu/bionic64"
+    config.vm.box_version = "20190529.0.0"
 
     staticIpAddress = "192.168.33.11"
     httpPortForwardingHost = "8080"
