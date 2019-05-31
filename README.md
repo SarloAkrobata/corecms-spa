@@ -13,6 +13,7 @@ vagrant up
 vagrant ssh
 cd /vagrant
 sudo npm run serve //sudo here, because its need privilegies for serving on port 80
+Local url: spa.corecms.test
 ```
 
 ### Compiles and minifies for production
