@@ -7,8 +7,8 @@
             <v-card class="elevation-1 pa-3">
               <v-card-text>
                 <div class="layout column align-center">
-                  <img src="/static/m.png" alt="Vue Material Admin" width="120" height="120">
-                  <h1 class="flex my-4 primary--text">CoreCMS Login</h1>
+                  <img src="/static/default.png" alt="Core cms" width="300" height="300">
+                  <h1 class="flex my-4 primary--text">Login</h1>
                 </div>                
                 <v-form>
                   <v-text-field append-icon="person" name="login" label="Login" type="text" v-model="model.username"></v-text-field>
@@ -42,8 +42,8 @@ export default {
   data: () => ({
     loading: false,
     model: {
-      username: 'admin@isockde.com',
-      password: 'password'
+      username: 'nikola1@gmail.com',
+      password: '123'
     }
   }),
 
@@ -52,7 +52,7 @@ export default {
       this.loading = true;
       return axios({
         method: "post",
-        withCredentials: true,
+        withCredentials: false,
         data: {
           email: this.model.username,
           password: this.model.password
@@ -63,7 +63,11 @@ export default {
           "X-Requested-With": "XMLHttpRequest"
         }
       })
-        .then(() => this.$router.push("/dashboard"))
+        // .then(() => this.$router.push("/dashboard"))
+          .then(data => {
+            localStorage.token = data.data.token;
+            this.$router.push("/dashboard");
+          })
         .catch(function() {
           return false;
         });

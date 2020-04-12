@@ -37,9 +37,9 @@
                     hide-details
                     v-model="props.selected"
                   >  </v-checkbox></td>
-                  <td>{{ props.item.page_id }}</td>
+                  <td>{{ props.item.id }}</td>
                   <td>{{ props.item.title }}</td>
-                  <td>{{ props.item.template }}</td>
+                  <td>{{ props.item.layout }}</td>
                   <td>{{ props.item.published }}</td>
                   <td>
                     <v-btn depressed outline icon fab dark color="primary" small>
@@ -70,7 +70,7 @@ export default {
         headers: [
           {
             text: "ID",
-            value: "page_id"
+            value: "id"
           },
           {
             text: "Title",
@@ -78,7 +78,7 @@ export default {
           },
           {
             text: "Template",
-            value: "template"
+            value: "layout"
           },
           {
             text: "Published",
@@ -101,15 +101,16 @@ export default {
       this.loading = true;
       return axios({
         method: "get",
-        withCredentials: true,
-        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES,
+        withCredentials: false,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_GETALL,
         headers: {
           "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest"
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "Bearer " + localStorage.token
         }
       })
         .then((response) => {
-          this.complex.items.push(response.data);
+          this.complex.items.push(response.data.data);
         })
         .catch(function() {
           return false;

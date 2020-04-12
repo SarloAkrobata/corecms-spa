@@ -39,11 +39,12 @@ function isValid() {
   console.log(process.env);
   return axios({
     method: "get",
-    withCredentials: true,
+    withCredentials: false,
     url: process.env.VUE_APP_API_URL + process.env.VUE_APP_VALIDATE,
     headers: {
       "Content-Type": "application/json",
-      "X-Requested-With": "XMLHttpRequest"
+      "X-Requested-With": "XMLHttpRequest",
+      Authorization: "Bearer " + localStorage.token
     }
   })
     .then(function() {

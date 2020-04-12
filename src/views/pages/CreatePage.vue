@@ -6,6 +6,10 @@
           <v-widget title="Basic Usage">
             <div slot="widget-content">
               <v-container>
+                <vue-dropzone ref="myVueDropzone"
+                              id="dropzone"
+                              :options="dropzoneOptions"
+                              v-on:vdropzone-sending="sendingEvent"></vue-dropzone>
                 <v-layout row>
                   <v-flex xs4>
                     <v-subheader>Page title</v-subheader>
@@ -36,12 +40,12 @@
                 </v-layout>
                 <v-layout row>
                   <v-flex xs4>
-                    <v-subheader>Page template</v-subheader>
+                    <v-subheader>Page layout</v-subheader>
                   </v-flex>
                   <v-flex xs8>
                     <v-text-field
-                      label="Add template name"
-                      v-model="template"
+                      label="Add layout name"
+                      v-model="layout"
                       :rules="[rules.required]"
                     ></v-text-field>
                   </v-flex>
@@ -87,6 +91,8 @@
 </template>
 
 <script>
+import vue2Dropzone from "vue2-dropzone";
+import "vue2-dropzone/dist/vue2Dropzone.min.css";
 import VWidget from "@/components/VWidget";
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
@@ -95,6 +101,7 @@ import { quillEditor } from "vue-quill-editor";
 import axios from "axios"
 export default {
   components: {
+    vueDropzone: vue2Dropzone,
     VWidget,
     quillEditor
   },
@@ -104,15 +111,22 @@ export default {
       editorOption: {
         placeholder: "Enter your content here"
       },
+      dropzoneOptions: {
+        url: "https://httpbin.org/post",
+        thumbnailWidth: 150,
+        maxFilesize: 0.5,
+        headers: { "My-Awesome-Header": "header value" }
+      },
+      album: "95sd1f1ds1v98ds981v",
       title: "",
       description: "",
-      template: "",
+      layout: "",
       published: false,
       fullscreen: {
         dialog: false,
-        notifications: false,
+        notifications: true,
         sound: true,
-        widgets: false
+        widgets: true
       },
       rules: {
         required: (value) => !!value || 'Required.',
@@ -125,18 +139,19 @@ export default {
       this.loading = true;
       return axios({
         method: "post",
-        withCredentials: true,
+        withCredentials: false,
         data: {
           title: this.title,
           description: this.description,
-          template: this.template,
+          layout: this.layout,
           content: this.content,
           published: this.published
         },
-        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_CREATE,
         headers: {
           "Content-Type": "application/json",
-          "X-Requested-With": "XMLHttpRequest"
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "Bearer " + localStorage.token
         }
       })
         .then((response) => {
@@ -146,6 +161,9 @@ export default {
         .catch(function() {
           return false;
         });
+    },
+    sendingEvent(file, xhr, formData) {
+      formData.append("album_id", "some value or other");
     }
   }
 };
