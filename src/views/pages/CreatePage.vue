@@ -6,6 +6,17 @@
           <v-widget title="Basic Usage">
             <div slot="widget-content">
               <v-container>
+
+                <v-flex xs6>
+                  <v-select
+                          :items="albums[0]"
+                          v-model="e1"
+                          label="Select Album"
+                          item-text="name"
+                          item-value="id"
+                          single-line
+                  ></v-select>
+                </v-flex>
                 <vue-dropzone ref="myVueDropzone"
                               id="dropzone"
                               :options="dropzoneOptions"
@@ -129,12 +140,16 @@ export default {
         sound: true,
         widgets: true
       },
+      albums: [],
       rules: {
         required: (value) => !!value || 'Required.',
       }
     };
   },
   computed: {},
+  mounted() {
+    this.getAllAlbums();
+  },
   methods: {
     createPageRequest () {
       this.loading = true;
@@ -146,7 +161,8 @@ export default {
           description: this.description,
           layout: this.layout,
           content: this.content,
-          published: this.published
+          published: this.published,
+          album_id: this.e1
         },
         url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_CREATE,
         headers: {
@@ -165,6 +181,25 @@ export default {
     },
     sendingEvent(file, xhr, formData) {
       formData.append("album", '');
+    },
+    getAllAlbums () {
+      this.loading = true;
+      return axios({
+        method: "get",
+        withCredentials: false,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_GET_ALL_ALBUMS,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "Bearer " + localStorage.token
+        }
+      })
+        .then((response) => {
+          this.albums.push(response.data.data);
+          console.log(this.albums);
+        })
+        .catch(function() {
+          return false;
+        });
     }
   }
 };
