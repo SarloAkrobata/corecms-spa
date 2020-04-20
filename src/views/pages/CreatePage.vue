@@ -112,12 +112,13 @@ export default {
         placeholder: "Enter your content here"
       },
       dropzoneOptions: {
-        url: "https://httpbin.org/post",
+        url:  process.env.VUE_APP_API_URL + process.env.VUE_APP_IMAGE_UPLOAD,
         thumbnailWidth: 150,
-        maxFilesize: 0.5,
-        headers: { "My-Awesome-Header": "header value" }
+        maxFilesize: 5,
+        headers: {
+          Authorization: "Bearer " + localStorage.token
+        }
       },
-      album: "95sd1f1ds1v98ds981v",
       title: "",
       description: "",
       layout: "",
@@ -163,7 +164,7 @@ export default {
         });
     },
     sendingEvent(file, xhr, formData) {
-      formData.append("album_id", "some value or other");
+      formData.append("album", '');
     }
   }
 };
