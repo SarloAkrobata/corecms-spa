@@ -86,7 +86,14 @@ export default [
         `@/views/pages/CreatePage.vue`
         )
   },
-
+  {
+    path: "/images/upload",
+    meta: { breadcrumb: true, public: false },
+    name: "images/upload",
+    component: () => import(
+        `@/views/pages/CreatePage.vue`
+        )
+  },
   {
     path: '/media',
     meta: { },

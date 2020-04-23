@@ -20,7 +20,7 @@
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text class="pa-0">
-              <v-data-table
+              <v-data-table :loading="loading"
                 :headers="complex.headers"
                 :search="search"
                 :items="complex.items[0]"
@@ -64,6 +64,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      loading: true,
       search: "",
       complex: {
         selected: [],
@@ -111,6 +112,7 @@ export default {
       })
         .then((response) => {
           this.complex.items.push(response.data.data);
+          this.loading = false;
         })
         .catch(function() {
           return false;

@@ -3,23 +3,13 @@
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
         <v-flex sm12>
-          <v-widget title="Basic Usage">
+          <v-widget title="Easy page create tool">
             <div slot="widget-content">
               <v-container>
-
-                <v-flex xs6>
-                  <v-select
-                          :items="albums[0]"
-                          v-model="e1"
-                          label="Select Album"
-                          item-text="name"
-                          item-value="id"
-                          single-line
-                  ></v-select>
-                </v-flex>
                 <vue-dropzone ref="myVueDropzone"
                               id="dropzone"
                               :options="dropzoneOptions"
+                              v-on:vdropzone-success-multiple="handleUpload"
                               v-on:vdropzone-sending="sendingEvent"></vue-dropzone>
                 <v-layout row>
                   <v-flex xs4>
@@ -75,7 +65,7 @@
                             <v-toolbar-title>Content section</v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-toolbar-items>
-                              <v-btn dark flat @click.native ="dialog = false" @click="createPageRequest">Save</v-btn>
+                              <v-btn dark flat @click.native ="fullscreen.dialog = false">Save</v-btn>
                             </v-toolbar-items>
                           </v-toolbar>
                           <v-flex sm12>
@@ -92,12 +82,29 @@
                     </div>
                   </v-widget>
                 </v-flex>
+                <v-container>
+                  <v-flex>
+                    <v-btn color="primary" class="desno" @click="startUpload">Create page</v-btn>
+                  </v-flex>
+                </v-container>
               </v-container>
             </div>
           </v-widget>
         </v-flex>
       </v-layout>
     </v-container>
+    <v-snackbar
+            :timeout="3000"
+            bottom
+            left
+            :color="snackbar.color"
+            v-model="snackbar.show"
+    >
+      {{ snackbar.text }}
+      <v-btn dark flat @click.native="snackbar.show = false" icon>
+        <v-icon>close</v-icon>
+      </v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -118,6 +125,12 @@ export default {
   },
   data() {
     return {
+      loading: true,
+      snackbar: {
+        show: false,
+        text: 'ERROR',
+        color: 'green',
+      },
       content: "",
       editorOption: {
         placeholder: "Enter your content here"
@@ -125,7 +138,13 @@ export default {
       dropzoneOptions: {
         url:  process.env.VUE_APP_API_URL + process.env.VUE_APP_IMAGE_UPLOAD,
         thumbnailWidth: 150,
+        acceptedFiles: 'image/*,application/pdf,.doc',
         maxFilesize: 5,
+        maxFiles: 50,
+        uploadMultiple: true,
+        parallelUploads: 50,
+        autoProcessQueue: false,
+        addRemoveLinks: true,
         headers: {
           Authorization: "Bearer " + localStorage.token
         }
@@ -151,7 +170,7 @@ export default {
     this.getAllAlbums();
   },
   methods: {
-    createPageRequest () {
+    createPageRequest (albumId) {
       this.loading = true;
       return axios({
         method: "post",
@@ -162,7 +181,7 @@ export default {
           layout: this.layout,
           content: this.content,
           published: this.published,
-          album_id: this.e1
+          album_id: albumId
         },
         url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_CREATE,
         headers: {
@@ -171,16 +190,32 @@ export default {
           Authorization: "Bearer " + localStorage.token
         }
       })
-        .then((response) => {
-          console.log(response);
-
+        .then(() => {
+          setTimeout(()=>{
+            this.snackbar.show = true;
+            this.snackbar.text = "Success";
+            this.snackbar.color = "green";
+            this.$router.replace({ path: '/pages/all' });
+          },1000);
         })
         .catch(function() {
           return false;
         });
     },
+    handleUpload(file, resonse) {
+      this.createPageRequest(resonse.data.albumId);
+    },
+    startUpload() {
+      if (!this.validate()) {
+        return false;
+      }
+      if (this.$refs.myVueDropzone.getAcceptedFiles().length === 0) {
+        this.createPageRequest(null);
+      }
+      this.$refs.myVueDropzone.processQueue();
+    },
     sendingEvent(file, xhr, formData) {
-      formData.append("album", '');
+      formData.append("album", this.title);
     },
     getAllAlbums () {
       this.loading = true;
@@ -195,11 +230,38 @@ export default {
       })
         .then((response) => {
           this.albums.push(response.data.data);
-          console.log(this.albums);
         })
         .catch(function() {
           return false;
         });
+    },
+    validate() {
+      if (this.title === '') {
+        this.snackbar.show = true;
+        this.snackbar.text = "Title is required";
+        this.snackbar.color = "red";
+        return false;
+      }
+      if (this.description === '') {
+        this.snackbar.show = true;
+        this.snackbar.text = "Description is required";
+        this.snackbar.color = "red";
+        return false;
+      }
+      if (this.layout === '') {
+        this.snackbar.show = true;
+        this.snackbar.text = "Layout is required";
+        this.snackbar.color = "red";
+        return false;
+      }
+      if (this.content === '') {
+        this.snackbar.show = true;
+        this.snackbar.text = "Content is required";
+        this.snackbar.color = "red";
+        return false;
+      }
+
+      return true;
     }
   }
 };
