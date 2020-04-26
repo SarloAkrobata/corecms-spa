@@ -43,12 +43,15 @@
                   <v-flex xs4>
                     <v-subheader>Page layout</v-subheader>
                   </v-flex>
-                  <v-flex xs8>
-                    <v-text-field
-                      label="Add layout name"
-                      v-model="layout"
-                      :rules="[rules.required]"
-                    ></v-text-field>
+                  <v-flex xs6>
+                    <v-select
+                            :items="layouts[0]"
+                            v-model="layout"
+                            label="Select"
+                            item-text="name"
+                            item-value="name"
+                            single-line
+                    ></v-select>
                   </v-flex>
                 </v-layout>
                 <v-flex xl4>
@@ -159,7 +162,7 @@ export default {
         sound: true,
         widgets: true
       },
-      albums: [],
+      layouts: [],
       rules: {
         required: (value) => !!value || 'Required.',
       }
@@ -167,7 +170,7 @@ export default {
   },
   computed: {},
   mounted() {
-    this.getAllAlbums();
+    this.getLayouts();
   },
   methods: {
     createPageRequest (albumId) {
@@ -217,19 +220,19 @@ export default {
     sendingEvent(file, xhr, formData) {
       formData.append("album", this.title);
     },
-    getAllAlbums () {
+    getLayouts () {
       this.loading = true;
       return axios({
         method: "get",
         withCredentials: false,
-        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_GET_ALL_ALBUMS,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_GET_LAYOUTS,
         headers: {
           "X-Requested-With": "XMLHttpRequest",
           Authorization: "Bearer " + localStorage.token
         }
       })
         .then((response) => {
-          this.albums.push(response.data.data);
+          this.layouts.push(response.data.layouts);
         })
         .catch(function() {
           return false;

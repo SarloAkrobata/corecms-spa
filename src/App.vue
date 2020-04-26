@@ -73,8 +73,8 @@ export default {
     rightDrawer: false,
     snackbar: {
       show: true,
-      text: 'ERROR ERROR ERROR ERROR ERROR',
-      color: 'red',
+      text: 'Welcome to CoreCMS',
+      color: 'teal',
     }
   }),
 

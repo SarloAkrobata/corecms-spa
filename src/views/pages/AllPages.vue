@@ -43,7 +43,7 @@
                   <td>{{ props.item.published }}</td>
                   <td>
                     <v-btn depressed outline icon fab dark color="primary" small>
-                      <v-icon>edit</v-icon>
+                      <v-icon v-on:click="editPage(props.item.id)">edit</v-icon>
                     </v-btn>
                     <v-btn depressed outline icon fab dark color="pink" small>
                       <v-icon>delete</v-icon>
@@ -103,7 +103,7 @@ export default {
       return axios({
         method: "get",
         withCredentials: false,
-        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_GETALL,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_GET_ALL,
         headers: {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
@@ -117,6 +117,9 @@ export default {
         .catch(function() {
           return false;
         });
+    },
+    editPage(id) {
+      this.$router.replace({ path: '/pages/edit/'+id });
     }
   }
 };
