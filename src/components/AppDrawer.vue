@@ -95,7 +95,7 @@ export default {
       return true;
     },
     computeLogo () {
-      return '/static/a.svg';
+      return 'static/a.svg';
     },
 
     sideToolbarColor () {

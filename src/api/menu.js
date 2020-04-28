@@ -23,8 +23,8 @@ const Menu =  [
     component: 'picker',
     icon: 'filter_vintage',
     items: [
-      { name: 'timepicker', title: 'Timepicker', component: 'pickers/timepicker' },     
-      { name: 'datepicker', title: 'Datepicker', component: 'pickers/datepicker' },      
+      { name: 'menuManager', title: 'Menu Manager', component: 'menus/edit' },
+      // { name: 'datepicker', title: 'Datepicker', component: 'pickers/datepicker' },
 
     ]
   },

@@ -87,11 +87,27 @@ export default [
         )
   },
   {
+    path: "/pages/edit/:id",
+    meta: { breadcrumb: true, public: false },
+    name: "Edit",
+    component: () => import(
+        `@/views/pages/EditPage.vue`
+        )
+  },
+  {
     path: "/images/upload",
     meta: { breadcrumb: true, public: false },
     name: "images/upload",
     component: () => import(
         `@/views/pages/CreatePage.vue`
+        )
+  },
+  {
+    path: "/menus/edit",
+    meta: { breadcrumb: true, public: false },
+    name: "menus/edit",
+    component: () => import(
+        `@/views/menus/Menus.vue`
         )
   },
   {

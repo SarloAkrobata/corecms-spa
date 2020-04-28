@@ -53,7 +53,7 @@ import colors from 'vuetify/es5/util/colors';
 export default {
   data () {
     return {
-      themeColor: 'indigo',
+      themeColor: 'deepPurple',
       sideBarOption: 'light',
       colors: colors
     };
@@ -69,14 +69,14 @@ export default {
             sideManu: 'white'
           }
         },
-        // {
-        //   key: 'lightBlue',
-        //   value: {
-        //     sideNav: 'blue',
-        //     mainNav: 'white',
-        //     sideManu: 'blue lighten-1'
-        //   }
-        // },
+        {
+          key: 'lightBlue',
+          value: {
+            sideNav: 'blue',
+            mainNav: 'white',
+            sideManu: 'blue lighten-1'
+          }
+        },
         {
           key: 'teal',
           value: {
@@ -147,7 +147,7 @@ export default {
   watch: {
     themeColor: {
       handler (val) {
-        this.$vuetify.theme.primary = this.colors[val].base;
+        this.$vuetify.theme.primary = this.colors[val].darken4;
         
       },
       immediate: true

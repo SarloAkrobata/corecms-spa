@@ -42,10 +42,10 @@
                   <td>{{ props.item.layout }}</td>
                   <td>{{ props.item.published }}</td>
                   <td>
-                    <v-btn depressed outline icon fab dark color="primary" small>
+                    <v-btn depressed outline icon fab light color="grey" small>
                       <v-icon v-on:click="editPage(props.item.id)">edit</v-icon>
                     </v-btn>
-                    <v-btn depressed outline icon fab dark color="pink" small>
+                    <v-btn depressed outline icon fab light color="grey" small>
                       <v-icon>delete</v-icon>
                     </v-btn>
                   </td>
@@ -119,7 +119,7 @@ export default {
         });
     },
     editPage(id) {
-      this.$router.replace({ path: '/pages/edit/'+id });
+      this.$router.push({ path: '/pages/edit/'+id });
     }
   }
 };
