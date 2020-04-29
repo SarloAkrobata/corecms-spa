@@ -1,4 +1,5 @@
 <template>
+  <transition name="fade" appear>
   <div id="pageTable">
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
@@ -57,6 +58,7 @@
       </v-layout>
     </v-container>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -124,3 +126,12 @@ export default {
   }
 };
 </script>
+
+<style>
+  .fade-enter-active {
+    transition: opacity 2s;
+  }
+  .fade-enter /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }
+</style>

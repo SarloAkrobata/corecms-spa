@@ -1,4 +1,5 @@
 <template>
+  <transition name="fade" appear>
   <div id="page-text-fields">
     <v-container grid-list-xl fluid>
       <v-layout row wrap>
@@ -108,6 +109,7 @@
       </v-btn>
     </v-snackbar>
   </div>
+  </transition>
 </template>
 
 <script>
@@ -274,5 +276,11 @@ export default {
 }
 .quill {
   height : 520px
+}
+.fade-enter-active {
+  transition: opacity 2s;
+}
+.fade-enter /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

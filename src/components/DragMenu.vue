@@ -38,7 +38,7 @@ div
         methods: {
             tree1Change(node, targetTree) {
                 this.data = targetTree.getPureData()
-                console.log(this.data)
+                this.$emit('sortedItems', this.data)
             },
         },
         // created() {},
