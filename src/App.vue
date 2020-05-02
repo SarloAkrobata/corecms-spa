@@ -88,7 +88,6 @@ export default {
   },
   methods: {
     openThemeSettings () {
-      console.log('AAAAAAAAAAAAAAAAAAAA', this.route.meta.public);
       this.$vuetify.goTo(0);
       this.rightDrawer = (!this.rightDrawer);
     }

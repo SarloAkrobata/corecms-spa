@@ -103,6 +103,14 @@ export default [
         )
   },
   {
+    path: "/albums/edit/:albumId",
+    meta: { breadcrumb: true, public: false },
+    name: "albums/edit",
+    component: () => import(
+        `@/views/images/EditImages.vue`
+        )
+  },
+  {
     path: "/menus/edit",
     meta: { breadcrumb: true, public: false },
     name: "menus/edit",

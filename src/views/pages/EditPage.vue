@@ -55,67 +55,7 @@
                     <v-subheader>Images</v-subheader>
                   </v-flex>
                   <v-flex xs6>
-
-                    <div slot="widget-content">
-                      <v-dialog v-model="basic.dialog" persistent scrollable max-width="1500px">
-                        <v-btn  light slot="activator">Edit images</v-btn>
-                        <v-card>
-                          <v-card-title>
-                            <span class="headline">Page gallery</span>
-                          </v-card-title>
-                          <v-divider></v-divider>
-                          <v-card-text>
-                            <v-container grid-list-md>
-                              <v-layout wrap>
-                                <v-flex xs12 sm6 md4>
-                                  <v-text-field label="Legal first name" required></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6 md4>
-                                  <v-text-field label="Legal middle name" hint="example of helper text only on focus"></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6 md4>
-                                  <v-text-field
-                                          label="Legal last name"
-                                          hint="example of persistent helper text"
-                                          persistent-hint
-                                          required
-                                  ></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
-                                  <v-text-field label="Email" required></v-text-field>
-                                </v-flex>
-                                <v-flex xs12>
-                                  <v-text-field label="Password" type="password" required></v-text-field>
-                                </v-flex>
-                                <v-flex xs12 sm6>
-                                  <v-select
-                                          label="Age"
-                                          required
-                                          :items="['0-17', '18-29', '30-54', '54+']"
-                                  ></v-select>
-                                </v-flex>
-                                <v-flex xs12 sm6>
-                                  <v-select
-                                          label="Interests"
-                                          multiple
-                                          autocomplete
-                                          chips
-                                          :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                                  ></v-select>
-                                </v-flex>
-                              </v-layout>
-                            </v-container>
-                            <small>*indicates required field</small>
-                          </v-card-text>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" flat @click.native="basic.dialog = false">Close</v-btn>
-                            <v-btn color="blue darken-1" flat @click.native="basic.dialog = false">Save</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                    </div>
-
+                    <v-btn  light @click="editImages">Edit images</v-btn>
                   </v-flex>
                 </v-layout>
                 <v-flex xl4>
@@ -151,7 +91,7 @@
                 </v-flex>
                 <v-container>
                   <v-flex>
-                    <v-btn color="primary" class="desno" @click="startUpload">Update page</v-btn>
+                    <v-btn color="primary" class="desno" @click="">Update page</v-btn>
                   </v-flex>
                 </v-container>
               </v-container>
@@ -200,6 +140,7 @@ export default {
       published: false,
       content: "",
       layouts: [],
+      album_id: null,
       snackbar: {
         show: false,
         text: 'ERROR',
@@ -245,7 +186,7 @@ export default {
     createPageRequest (albumId) {
       this.loading = true;
       return axios({
-        method: "post",
+        method: "put",
         withCredentials: false,
         data: {
           title: this.title,
@@ -255,7 +196,7 @@ export default {
           published: this.published,
           album_id: albumId
         },
-        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_CREATE,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_UPDATE + this.$route.params.id,
         headers: {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
@@ -267,27 +208,44 @@ export default {
             this.snackbar.show = true;
             this.snackbar.text = "Success";
             this.snackbar.color = "green";
-            this.$router.replace({ path: '/pages/all' });
+            // this.$router.replace({ path: '/pages/all' });
           },1000);
         })
         .catch(function() {
           return false;
         });
     },
-    handleUpload(file, resonse) {
-      this.createPageRequest(resonse.data.albumId);
-    },
-    startUpload() {
-      if (!this.validate()) {
-        return false;
+    editImages() {
+      let albumId = this.album_id;
+      if (albumId === null) {
+        this.createAlbum(this.title)
+        .then((newAlbumId) => {
+          this.createPageRequest(newAlbumId);
+          this.$router.replace({ path: '/albums/edit/' + newAlbumId });
+        });
       }
-      if (this.$refs.myVueDropzone.getAcceptedFiles().length === 0) {
-        this.createPageRequest(null);
-      }
-      this.$refs.myVueDropzone.processQueue();
+      this.$router.replace({ path: '/albums/edit/' + albumId });
     },
-    sendingEvent(file, xhr, formData) {
-      formData.append("album", this.title);
+    createAlbum(name) {
+      return axios({
+        method: "post",
+        withCredentials: false,
+        data: {
+          name: name,
+        },
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_ALBUM_CREATE_AND_RETURN,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+          Authorization: "Bearer " + localStorage.token
+        }
+      })
+        .then((response) => {
+          return response.data.album_id;
+        })
+        .catch(function() {
+          return false;
+        });
     },
     getLayouts () {
       this.loading = true;
@@ -319,12 +277,13 @@ export default {
         }
       })
               .then((response) => {
-                console.log(response.data.data.title)
+                console.log(response.data.data)
                 this.title  = response.data.data.title;
                 this.description  = response.data.data.description;
                 this.layout = response.data.data.layout;
                 this.published = response.data.data.published;
                 this.content = response.data.data.content;
+                this.album_id = response.data.data.album_id;
                 this.loading = false;
               })
               .catch(function() {

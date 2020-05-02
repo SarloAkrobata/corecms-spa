@@ -6,7 +6,7 @@ const Menu =  [
     icon: 'dashboard',
     name: 'Dashboard',
   },
-  { header: 'Main Menu' },
+  { header: 'Content Management' },
   {
     title: 'Pages',
     group: 'components',
