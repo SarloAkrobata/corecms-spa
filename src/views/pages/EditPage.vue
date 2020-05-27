@@ -183,7 +183,7 @@ export default {
     this.getLayouts();
   },
   methods: {
-    createPageRequest (albumId) {
+    createPageRequest (albumId, pageId) {
       this.loading = true;
       return axios({
         method: "put",
@@ -196,7 +196,7 @@ export default {
           published: this.published,
           album_id: albumId
         },
-        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_UPDATE + this.$route.params.id,
+        url: process.env.VUE_APP_API_URL + process.env.VUE_APP_PAGES_UPDATE + pageId,
         headers: {
           "Content-Type": "application/json",
           "X-Requested-With": "XMLHttpRequest",
@@ -220,11 +220,12 @@ export default {
       if (albumId === null) {
         this.createAlbum(this.title)
         .then((newAlbumId) => {
-          this.createPageRequest(newAlbumId);
+          this.createPageRequest(newAlbumId, this.$route.params.id);
           this.$router.replace({ path: '/albums/edit/' + newAlbumId });
         });
+      } else {
+        this.$router.replace({ path: '/albums/edit/' + albumId });
       }
-      this.$router.replace({ path: '/albums/edit/' + albumId });
     },
     createAlbum(name) {
       return axios({
@@ -277,7 +278,6 @@ export default {
         }
       })
               .then((response) => {
-                console.log(response.data.data)
                 this.title  = response.data.data.title;
                 this.description  = response.data.data.description;
                 this.layout = response.data.data.layout;

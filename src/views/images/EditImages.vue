@@ -2,23 +2,23 @@
     <transition name="fade" appear>
     <div id="page-timepickers">
         <v-container grid-list-xl fluid>
-            <v-layout row wrap>
-                <v-flex lg6 sm12>
-                    <v-flex lg4 sm12>
+            <v-layout row wrap >
+                <v-flex lg3 sm12  v-for="image in images" :key="image.name">
+                    <v-flex>
                         <v-card>
-                            <v-card-media src="/static/bg/8.jpg" height="250">
-                                <h2 class="white--text pa-3">
-                                    Card with image
-                                </h2>
+                            <v-card-media src="https://via.placeholder.com/450" height="250">
+                                <h4 class="white--text pa-3">
+                                    {{image.name}}
+                                </h4>
                             </v-card-media>
                             <v-card-text>
                                 <div>
-                                    Asasdfdfgadsff
+                                    Alt tag: {{image.alt}}
                                 </div>
                             </v-card-text>
                             <v-divider></v-divider>
                             <v-card-actions>
-                                <v-btn flat small>Link</v-btn>
+                                <v-btn flat small>Edit image</v-btn>
                             </v-card-actions>
                         </v-card>
                     </v-flex>
@@ -41,7 +41,66 @@
         },
         data () {
             return {
-                data: null
+                data: null,
+                images: [
+                    {
+                        name: "Jankov Kamen",
+                        alt: "jankov kamen",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Pogled",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Jankov Kamen",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Pogled",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Jankov Kamen",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Pogled",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Jankov Kamen",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Jankov Kamen",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Pogled",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Jankov Kamen",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Pogled",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Jankov Kamen",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Pogled",
+                        path: "/path/to/image"
+                    },
+                    {
+                        name: "Jankov Kamen",
+                        path: "/path/to/image"
+                    },
+                ]
             };
         },
 

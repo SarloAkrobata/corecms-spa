@@ -54,6 +54,37 @@
                     ></v-select>
                   </v-flex>
                 </v-layout>
+
+                <v-layout row>
+                  <v-flex xs4>
+                    <v-subheader>Menus</v-subheader>
+                  </v-flex>
+                  <v-flex xs3>
+                    <v-select
+                            :items="menus"
+                            v-model="aaa"
+                            label="Choose menu"
+                            item-text="name"
+                            item-value="name"
+                            single-line
+                    ></v-select>
+                  </v-flex>
+                  <v-flex xs3>
+                    <v-select
+                            :items="layouts[0]"
+                            v-model="assd"
+                            label="Choose route"
+                            item-text="name"
+                            item-value="name"
+                            single-line
+                    ></v-select>
+                  </v-flex>
+                  <v-flex xs2>
+                    <a href="#/menus/edit">Create</a>
+                  </v-flex>
+
+                </v-layout>
+
                 <v-flex xl4>
                   <v-widget title="Add content here">
                     <div slot="widget-content">
@@ -164,6 +195,7 @@ export default {
         widgets: true
       },
       layouts: [],
+      menus: ['Main menu', 'Footer menu'],
       rules: {
         required: (value) => !!value || 'Required.',
       }
